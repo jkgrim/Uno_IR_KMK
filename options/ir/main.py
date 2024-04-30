@@ -55,19 +55,19 @@ B2 = layerFactory((255*2)//3, 2)
 Y3 = layerFactory(None, 3)
 
 # A couple extra keys for special volume effects on MacOS
-def addMods(key, keyboard, *args):
+def addModsSA(key, keyboard, *args):
     keyboard.add_key(KC.LSFT)
     keyboard.add_key(KC.LALT)
-def removeMods(key, keyboard, *args):
+def removeModsSA(key, keyboard, *args):
     keyboard.remove_key(KC.LSFT)
     keyboard.remove_key(KC.LALT)
 
 SMALL_VOLU = KC.VOLU.clone()
-SMALL_VOLU.before_press_handler(addMods)
-SMALL_VOLU.after_release_handler(removeMods)
+SMALL_VOLU.before_press_handler(addModsSA)
+SMALL_VOLU.after_release_handler(removeModsSA)
 SMALL_VOLD = KC.VOLD.clone()
-SMALL_VOLD.before_press_handler(addMods)
-SMALL_VOLD.after_release_handler(removeMods)
+SMALL_VOLD.before_press_handler(addModsSA)
+SMALL_VOLD.after_release_handler(removeModsSA)
 
 # The IR Module below is what actually handles listening for codes and mapping them to functions.
 from IRModule import IR_Handler
@@ -77,23 +77,23 @@ irHandler.pin = microcontroller.pin.GPIO25
 SEND_IR_CODE = irHandler.newIRKey
 
 irHandler.map = { # Note that transparent keys don't work on the mapping here, every layer just have a value.  transparent might have undefined behavior.
-                 "490": (KC.VOLU, SMALL_VOLU, KC.BRIGHTNESS_UP, SEND_IR_CODE),
-                 "C90": (KC.VOLD, SMALL_VOLD, KC.BRIGHTNESS_DOWN, SEND_IR_CODE),
-                 "E6B47": (R0, R0, R0, R0),
-                 "16B47": (G1, G1, G1, G1),
-                 "66B47": (B2, B2, B2, B2),
-                 "96B47": (Y3, Y3, Y3, Y3),
                  "new": (SEND_IR_CODE, SEND_IR_CODE, SEND_IR_CODE, SEND_IR_CODE), # Most people don't have a way to activate the other layers unless they happen to have the exact same remote, so... let's do this: it'll spit it out on every layer (used to only be the last one)
-                 "B47": (KC.N1, send_string("I"), send_string("one"), SEND_IR_CODE),
-                 "80B47": (KC.N2, send_string("II"), send_string("two"), SEND_IR_CODE),
-                 "40B47": (KC.N3, send_string("III"), send_string("three"), SEND_IR_CODE),
-                 "C0B47": (KC.N4, send_string("IV"), send_string("four"), SEND_IR_CODE),
-                 "20B47": (KC.N5, send_string("V"), send_string("five"), SEND_IR_CODE),
-                 "A0B47": (KC.N6, send_string("VI"), send_string("six"), SEND_IR_CODE),
-                 "60B47": (KC.N7, send_string("VII"), send_string("seven"), SEND_IR_CODE),
-                 "E0B47": (KC.N8, send_string("VIII"), send_string("eight"), SEND_IR_CODE),
-                 "10B47": (KC.N9, send_string("IX"), send_string("nine"), SEND_IR_CODE),
-                 "90B47": (KC.N0, send_string("...0?"), send_string("zero"), SEND_IR_CODE),
+                 "FF1AE5": (R0, R0, R0, R0), # Layer 1
+                 "FF9A65": (G1, G1, G1, G1), # Layer 2
+                 "FFA25D": (B2, B2, B2, B2), # Layer 3
+                 "FF22DD": (Y3, Y3, Y3, Y3), # Layer 4
+                 "FF3AC5": (KC.VOLU, KC.BRIGHTNESS_UP, SMALL_VOLU, SEND_IR_CODE),
+                 "FFBA45": (KC.VOLD, KC.BRIGHTNESS_DOWN, SMALL_VOLD, SEND_IR_CODE),
+                 "FF02FD": (KC.LCMD(KC.LCTL(KC.Q)), KC.LCMD(KC.LCTL(KC.Q)), KC.LCMD(KC.LCTL(KC.Q)), SEND_IR_CODE),
+                 "FF30CF": (KC.MPRV, KC.MPRV, KC.MPRV, SEND_IR_CODE),
+                 "FFB04F": (KC.MPLY, KC.MPLY, KC.MPLY, SEND_IR_CODE),
+                 "FF708F": (KC.MNXT, KC.MNXT, KC.MNXT, SEND_IR_CODE),
+                 "FFA857": (KC.UP, KC.UP, KC.UP, SEND_IR_CODE),
+                 "FF08F7": (KC.LEFT, KC.LEFT, KC.LEFT, SEND_IR_CODE),
+                 "FF8877": (KC.DOWN, KC.DOWN, KC.DOWN, SEND_IR_CODE),
+                 "FF48B7": (KC.RGHT, KC.RGHT, KC.RGHT, SEND_IR_CODE),
+                 "FFE817": (KC.PGUP, KC.PGUP, KC.PGUP, SEND_IR_CODE),
+                 "FFC837": (KC.PGDN, KC.PGDN, KC.PGDN, SEND_IR_CODE),
 }
 
 keyboard.debug_enabled = True
