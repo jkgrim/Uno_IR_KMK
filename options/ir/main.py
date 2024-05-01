@@ -24,21 +24,28 @@ keyboard.extensions.append(rgb)
 from kmk.modules.layers import Layers
 keyboard.modules.append(Layers())
 
+# Here, we're loading the text from the "macro.txt" file into the key
+fp = open("macro.txt", "r")
+typeText = fp.read()
+print("Loaded text to write:\n", typeText)
+macroKey = send_string(typeText)
+
+# And, just to spice things up, we'll make it so that the RGB LED chnages to blue while it types
+def setColorKey(color):
+    def setColorFunc(key, keyboard, *args, **kwargs):
+        nonlocal color
+        rgb.hue = color
+        rgb.animation_mode = AnimationModes.STATIC
+        rgb.animate()
+    return make_key(on_press=setColorFunc)
+myKey = simple_key_sequence((
+    setColorKey((255*2)//3),
+    macroKey,
+    setColorKey(0),
+))
+
 # The keymap for the button is very simple: it's just the letter A.  Feel free to adapt.
-keyboard.keymap = [
-    [
-     KC.A
-    ],
-    [
-     KC.TRNS
-    ],
-    [
-     KC.TRNS
-    ],
-    [
-     KC.TRNS
-    ]
-]
+keyboard.keymap = [[myKey]]
 
 # We're going to set up everything so the RGB LED can work as a layer indicator
 def layerFactory(hue=None, layer=None):
@@ -82,6 +89,7 @@ irHandler.map = { # Note that transparent keys don't work on the mapping here, e
                  "FF9A65": (G1, G1, G1, G1), # Layer 2
                  "FFA25D": (B2, B2, B2, B2), # Layer 3
                  "FF22DD": (Y3, Y3, Y3, Y3), # Layer 4
+                 "FF827D": (G1, B2, Y3, R0), # Layer shift
                  "FF3AC5": (KC.VOLU, KC.BRIGHTNESS_UP, SMALL_VOLU, SEND_IR_CODE),
                  "FFBA45": (KC.VOLD, KC.BRIGHTNESS_DOWN, SMALL_VOLD, SEND_IR_CODE),
                  "FF02FD": (KC.LCMD(KC.LCTL(KC.Q)), KC.LCMD(KC.LCTL(KC.Q)), KC.LCMD(KC.LCTL(KC.Q)), SEND_IR_CODE),
@@ -94,6 +102,9 @@ irHandler.map = { # Note that transparent keys don't work on the mapping here, e
                  "FF48B7": (KC.RGHT, KC.RGHT, KC.RGHT, SEND_IR_CODE),
                  "FFE817": (KC.PGUP, KC.PGUP, KC.PGUP, SEND_IR_CODE),
                  "FFC837": (KC.PGDN, KC.PGDN, KC.PGDN, SEND_IR_CODE),
+                 "FFE01F": (myKey, myKey, myKey, SEND_IR_CODE),
+                 "FF28D7": (KC.LCTL(KC.LEFT), KC.LCTL(KC.LEFT), KC.LCTL(KC.LEFT), SEND_IR_CODE),
+                 "FF6897": (KC.LCTL(KC.RGHT), KC.LCTL(KC.RGHT), KC.LCTL(KC.RGHT), SEND_IR_CODE)
 }
 
 keyboard.debug_enabled = True
