@@ -104,7 +104,9 @@ irHandler.map = { # Note that transparent keys don't work on the mapping here, e
                  "FFC837": (KC.PGDN, KC.PGDN, KC.PGDN, SEND_IR_CODE),
                  "FFE01F": (myKey, myKey, myKey, SEND_IR_CODE),
                  "FF28D7": (KC.LCTL(KC.LEFT), KC.LCTL(KC.LEFT), KC.LCTL(KC.LEFT), SEND_IR_CODE),
-                 "FF6897": (KC.LCTL(KC.RGHT), KC.LCTL(KC.RGHT), KC.LCTL(KC.RGHT), SEND_IR_CODE)
+                 "FF6897": (KC.LCTL(KC.RGHT), KC.LCTL(KC.RGHT), KC.LCTL(KC.RGHT), SEND_IR_CODE),
+                 "FFF807": (KC.F13, KC.F13, KC.F13, SEND_IR_CODE),
+                 "FFD827": (KC.LSFT(KC.F13), KC.LSFT(KC.F13), KC.LSFT(KC.F13), SEND_IR_CODE)
 }
 
 keyboard.debug_enabled = True
